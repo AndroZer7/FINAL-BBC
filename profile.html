@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - BBC News Clone</title>
+    <!-- Remix Icon -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/profile.css" />
+    <link rel="stylesheet" href="styles/icons.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header__container">
+        <div class="header__logo">
+          <a href="index.html" class="logo-link">
+            <h1>BBC News</h1>
+          </a>
+        </div>
+        <nav class="header__nav">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="index.html" class="nav__link">Home</a>
+            </li>
+            <li class="nav__item">
+              <a href="#" class="nav__link">Bookmarks</a>
+            </li>
+            <li class="nav__item">
+              <a href="#" class="nav__link">Preferences</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="header__actions">
+          <button class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="ri-moon-line"></i>
+          </button>
+          <a href="index.html" class="home-link" aria-label="Home">
+            <i class="ri-home-line"></i>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main profile">
+      <div class="profile__container">
+        <!-- Profile Header -->
+        <section class="profile__header">
+          <div class="profile__avatar">
+            <img src="https://via.placeholder.com/150" alt="Profile Avatar" />
+            <button class="avatar-edit" aria-label="Edit avatar">
+              <i class="ri-camera-line"></i>
+            </button>
+          </div>
+          <div class="profile__info">
+            <h2 class="profile__name">John Doe</h2>
+            <p class="profile__email">john.doe@example.com</p>
+            <button class="profile__edit" aria-label="Edit profile">
+              <i class="ri-edit-line"></i> Edit Profile
+            </button>
+          </div>
+        </section>
+
+        <!-- Profile Sections -->
+        <section class="profile__sections">
+          <!-- Bookmarks Section -->
+          <div class="profile__section">
+            <h3 class="section__title">
+              <i class="ri-bookmark-line"></i>
+              My Bookmarks
+            </h3>
+            <div class="bookmarks__container">
+              <!-- Bookmarks will be dynamically populated here -->
+            </div>
+          </div>
+
+          <!-- Preferences Section -->
+          <div class="profile__section">
+            <h3 class="section__title">
+              <i class="ri-settings-3-line"></i>
+              Preferences
+            </h3>
+            <div class="preferences__container">
+              <div class="preference__item">
+                <label class="preference__label">Dark Mode</label>
+                <div class="toggle-switch">
+                  <input type="checkbox" id="dark-mode" class="toggle-input" />
+                  <label for="dark-mode" class="toggle-label"></label>
+                </div>
+              </div>
+              <div class="preference__item">
+                <label class="preference__label">Text-to-Speech</label>
+                <div class="toggle-switch">
+                  <input
+                    type="checkbox"
+                    id="text-to-speech"
+                    class="toggle-input"
+                    checked
+                  />
+                  <label for="text-to-speech" class="toggle-label"></label>
+                </div>
+              </div>
+              <div class="preference__item">
+                <label class="preference__label">Breaking News Alerts</label>
+                <div class="toggle-switch">
+                  <input
+                    type="checkbox"
+                    id="news-alerts"
+                    class="toggle-input"
+                    checked
+                  />
+                  <label for="news-alerts" class="toggle-label"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Categories Section -->
+          <div class="profile__section">
+            <h3 class="section__title">
+              <i class="ri-layout-line"></i>
+              Preferred Categories
+            </h3>
+            <div class="categories__container">
+              <div class="category__item">
+                <input type="checkbox" id="category-india" checked />
+                <label for="category-india">India News</label>
+              </div>
+              <div class="category__item">
+                <input type="checkbox" id="category-world" checked />
+                <label for="category-world">World News</label>
+              </div>
+              <div class="category__item">
+                <input type="checkbox" id="category-business" checked />
+                <label for="category-business">Business</label>
+              </div>
+              <div class="category__item">
+                <input type="checkbox" id="category-politics" checked />
+                <label for="category-politics">Politics</label>
+              </div>
+              <div class="category__item">
+                <input type="checkbox" id="category-tech" checked />
+                <label for="category-tech">Technology</label>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__content">
+          <div class="footer__sections">
+            <!-- BBC News Sections -->
+            <div class="footer__section">
+              <h3 class="footer__title">BBC News</h3>
+              <ul class="footer__list">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">India</a></li>
+                <li><a href="#">World</a></li>
+                <li><a href="#">Business</a></li>
+                <li><a href="#">Politics</a></li>
+                <li><a href="#">Tech</a></li>
+                <li><a href="#">Science</a></li>
+                <li><a href="#">Health</a></li>
+                <li><a href="#">Education</a></li>
+                <li><a href="#">Entertainment & Arts</a></li>
+              </ul>
+            </div>
+
+            <!-- BBC Services -->
+            <div class="footer__section">
+              <h3 class="footer__title">BBC Services</h3>
+              <ul class="footer__list">
+                <li><a href="#">BBC Weather</a></li>
+                <li><a href="#">BBC Sport</a></li>
+                <li><a href="#">BBC iPlayer</a></li>
+                <li><a href="#">BBC Sounds</a></li>
+                <li><a href="#">BBC Bitesize</a></li>
+                <li><a href="#">BBC Cymru</a></li>
+                <li><a href="#">BBC Alba</a></li>
+                <li><a href="#">BBC Scotland</a></li>
+              </ul>
+            </div>
+
+            <!-- More BBC Sites -->
+            <div class="footer__section">
+              <h3 class="footer__title">More BBC Sites</h3>
+              <ul class="footer__list">
+                <li><a href="#">BBC Homepage</a></li>
+                <li><a href="#">News in your local area</a></li>
+                <li><a href="#">BBC News App</a></li>
+                <li><a href="#">BBC News Channel</a></li>
+                <li><a href="#">BBC World News</a></li>
+                <li><a href="#">BBC News Arabic</a></li>
+                <li><a href="#">BBC News Russian</a></li>
+                <li><a href="#">BBC News Chinese</a></li>
+              </ul>
+            </div>
+
+            <!-- About the BBC -->
+            <div class="footer__section">
+              <h3 class="footer__title">About the BBC</h3>
+              <ul class="footer__list">
+                <li><a href="#">About the BBC</a></li>
+                <li><a href="#">BBC Charter</a></li>
+                <li><a href="#">BBC News Press Office</a></li>
+                <li><a href="#">BBC Complaints</a></li>
+                <li><a href="#">Contact the BBC</a></li>
+                <li><a href="#">Get Personalised Newsletters</a></li>
+                <li><a href="#">Why you can trust the BBC</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Footer Bottom -->
+          <div class="footer__bottom">
+            <div class="footer__copyright">
+              <p>
+                &copy; 2024 BBC. The BBC is not responsible for the content of
+                external sites.
+                <a href="#">Read about our approach to external linking.</a>
+              </p>
+            </div>
+            <div class="footer__legal">
+              <ul class="footer__legal-list">
+                <li><a href="#">Terms of Use</a></li>
+                <li><a href="#">About the BBC</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Cookies</a></li>
+                <li><a href="#">Accessibility Help</a></li>
+                <li><a href="#">Parental Guidance</a></li>
+                <li><a href="#">Contact the BBC</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Theme Configuration -->
+    <script src="js/theme.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/profile.js"></script>
+    <!-- Keyboard Shortcuts -->
+    <script src="js/keyboard-shortcuts.js"></script>
+  </body>
+</html>

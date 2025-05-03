@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BBC News Clone</title>
+    <!-- Preconnect to third-party resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    
+    <!-- Critical CSS -->
+    <style>
+      /* Critical CSS for above-the-fold content */
+      :root {
+        --primary-color: #bb1919;
+        --text-color: #333;
+        --bg-color: #fff;
+        --header-bg: #fff;
+        --nav-hover: #f5f5f5;
+        --border-color: #e5e5e5;
+        --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        --speech-btn-color: #333;
+        --speech-active-color: #bb1919;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        color: var(--text-color);
+        background-color: var(--bg-color);
+        line-height: 1.6;
+      }
+
+      .header {
+        background-color: var(--header-bg);
+        box-shadow: var(--card-shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header__logo h1 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+      }
+
+      .nav__list {
+        display: flex;
+        list-style: none;
+        gap: 1.5rem;
+      }
+
+      .nav__link {
+        text-decoration: none;
+        color: var(--text-color);
+        font-weight: 500;
+        padding: 0.5rem;
+        border-radius: 4px;
+      }
+
+      .news-article {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        background-color: var(--bg-color);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+      }
+
+      .article__image {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .article__image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+    
+    <style>
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .bookmark-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        color: var(--text-color);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .bookmark-btn:hover {
+        background-color: var(--nav-hover);
+      }
+
+      .bookmark-btn.bookmarked {
+        color: var(--primary-color);
+      }
+
+      .bookmark-btn.bookmarked:hover {
+        background-color: var(--nav-hover);
+        color: var(--primary-color);
+      }
+
+      .speech-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        color: var(--speech-btn-color);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .speech-btn:hover {
+        background-color: var(--nav-hover);
+      }
+
+      .speech-btn.speech-active {
+        color: var(--speech-active-color);
+      }
+
+      .speech-btn.speech-active:hover {
+        background-color: var(--nav-hover);
+        color: var(--speech-active-color);
+      }
+    </style>
+
+    <!-- Remix Icon -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles/main.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="styles/icons.css" media="print" onload="this.media='all'" />
+    <noscript>
+      <link rel="stylesheet" href="styles/main.css" />
+      <link rel="stylesheet" href="styles/icons.css" />
+    </noscript>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header__container">
+        <div class="header__logo">
+          <a href="index.html" class="logo-link">
+            <h1>BBC News</h1>
+          </a>
+        </div>
+        <nav class="header__nav">
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="#home" class="nav__link">Home</a>
+            </li>
+            <li class="nav__item">
+              <a href="#india" class="nav__link">India</a>
+            </li>
+            <li class="nav__item">
+              <a href="#world" class="nav__link">World</a>
+            </li>
+            <li class="nav__item">
+              <a href="#business" class="nav__link">Business</a>
+            </li>
+            <li class="nav__item">
+              <a href="#politics" class="nav__link">Politics</a>
+            </li>
+            <li class="nav__item">
+              <a href="#tech" class="nav__link">Tech</a>
+            </li>
+            <li class="nav__item">
+              <a href="#foryou" class="nav__link">For You</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="header__actions">
+          <button class="theme-toggle" aria-label="Toggle dark mode">
+            <i class="ri-moon-line"></i>
+          </button>
+          <button class="search-toggle" aria-label="Search">
+            <i class="ri-search-line"></i>
+          </button>
+          <a href="profile.html" class="profile-link" aria-label="Profile">
+            <i class="ri-user-line"></i>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Breaking News -->
+    <a href="breaking-news.html" class="breaking-news">
+      <div class="breaking-news__container">
+        <div class="breaking-news__label">
+          <i class="ri-megaphone-line"></i>
+          <span>Breaking News</span>
+        </div>
+        <div class="breaking-news__ticker">
+          <div class="breaking-news__content">
+            <div class="breaking-news__item">
+              <span class="breaking-news__time">10:30</span>
+              <span class="breaking-news__text"
+                >LevelUp Vibe Hackathon: Outlier AI challenges developers to
+                reinvent iconic websites with innovative features</span
+              >
+            </div>
+            <div class="breaking-news__item">
+              <span class="breaking-news__time">10:15</span>
+              <span class="breaking-news__text"
+                >Hackathon prizes include MacBook Pro, PlayStation 5, and
+                AirPods Pro Max for top innovative projects</span
+              >
+            </div>
+            <div class="breaking-news__item">
+              <span class="breaking-news__time">10:00</span>
+              <span class="breaking-news__text"
+                >Live office hours scheduled for May 3 at 3:30 PM IST - Get
+                expert support for your hackathon project</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Featured Articles Carousel -->
+      <section class="featured">
+        <div class="featured__container">
+          <div class="carousel">
+            <div class="carousel__track">
+              <div class="carousel__slide">
+                <a href="home1.html" class="article-link">
+                  <article>
+                    <div class="article__image">
+                      <img
+                        src="Images/AI Healthcare Revolution.webp"
+                        alt="AI Healthcare Revolution"
+                      />
+                    </div>
+                    <div class="article__content">
+                      <h2 class="article__title">
+                        AI-Powered Healthcare System Reduces Hospital Wait Times
+                        by 70%
+                      </h2>
+                      <p class="article__excerpt">
+                        A revolutionary AI healthcare system implemented across
+                        major hospitals has dramatically reduced patient wait
+                        times and improved diagnosis accuracy. The system,
+                        developed by a consortium of tech and medical companies,
+                        uses advanced machine learning to streamline patient
+                        care.
+                      </p>
+                      <div class="article__meta">
+                        <span class="article__reading-time">4 min read</span>
+                        <span class="article__update-time"
+                          >Updated 2 hours ago</span
+                        >
+                      </div>
+                      <div class="article__actions">
+                        <button class="article__action-btn" title="Bookmark">
+                          <i class="ri-bookmark-line"></i>
+                        </button>
+                        <button
+                          class="article__action-btn"
+                          title="Text to Speech"
+                        >
+                          <i class="ri-volume-up-line"></i>
+                        </button>
+                        <button class="article__action-btn" title="Share">
+                          <i class="ri-share-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                </a>
+              </div>
+              <div class="carousel__slide">
+                <a href="india1.html" class="article-link">
+                  <article>
+                    <div class="article__image">
+                      <img
+                        src="Images/India's Green Energy Milestone.webp"
+                        alt="India's Green Energy Milestone"
+                      />
+                    </div>
+                    <div class="article__content">
+                      <h2 class="article__title">
+                        India Achieves 50% Renewable Energy Target Ahead of
+                        Schedule
+                      </h2>
+                      <p class="article__excerpt">
+                        India has surpassed its renewable energy goals, with 50%
+                        of its total power generation now coming from clean
+                        sources. The achievement, reached two years ahead of
+                        schedule, marks a significant milestone in the country's
+                        transition to sustainable energy.
+                      </p>
+                      <div class="article__meta">
+                        <span class="article__reading-time">5 min read</span>
+                        <span class="article__update-time"
+                          >Updated 3 hours ago</span
+                        >
+                      </div>
+                      <div class="article__actions">
+                        <button class="article__action-btn" title="Bookmark">
+                          <i class="ri-bookmark-line"></i>
+                        </button>
+                        <button
+                          class="article__action-btn"
+                          title="Text to Speech"
+                        >
+                          <i class="ri-volume-up-line"></i>
+                        </button>
+                        <button class="article__action-btn" title="Share">
+                          <i class="ri-share-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                </a>
+              </div>
+              <div class="carousel__slide">
+                <a href="world1.html" class="article-link">
+                  <article>
+                    <div class="article__image">
+                      <img
+                        src="Images/Climate Summit.webp"
+                        alt="Global Climate Agreement"
+                      />
+                    </div>
+                    <div class="article__content">
+                      <h2 class="article__title">
+                        Historic Global Agreement Reached on Carbon Trading
+                        System
+                      </h2>
+                      <p class="article__excerpt">
+                        World leaders have signed a groundbreaking agreement
+                        establishing a unified global carbon trading system. The
+                        new framework aims to accelerate emissions reductions
+                        while providing economic incentives for developing
+                        nations to transition to clean energy.
+                      </p>
+                      <div class="article__meta">
+                        <span class="article__reading-time">6 min read</span>
+                        <span class="article__update-time"
+                          >Updated 4 hours ago</span
+                        >
+                      </div>
+                      <div class="article__actions">
+                        <button class="article__action-btn" title="Bookmark">
+                          <i class="ri-bookmark-line"></i>
+                        </button>
+                        <button
+                          class="article__action-btn"
+                          title="Text to Speech"
+                        >
+                          <i class="ri-volume-up-line"></i>
+                        </button>
+                        <button class="article__action-btn" title="Share">
+                          <i class="ri-share-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                </a>
+              </div>
+            </div>
+            <button
+              class="carousel__btn carousel__btn--prev"
+              aria-label="Previous article"
+            >
+              <i class="ri-arrow-left-s-line"></i>
+            </button>
+            <button
+              class="carousel__btn carousel__btn--next"
+              aria-label="Next article"
+            >
+              <i class="ri-arrow-right-s-line"></i>
+            </button>
+            <div class="carousel__indicators">
+              <button
+                class="carousel__indicator"
+                aria-label="Go to slide 1"
+              ></button>
+              <button
+                class="carousel__indicator"
+                aria-label="Go to slide 2"
+              ></button>
+              <button
+                class="carousel__indicator"
+                aria-label="Go to slide 3"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- News Sections -->
+      <section id="home" class="news-section">
+        <div class="section-header">
+          <h2 class="section-title">Home</h2>
+          <button class="bookmark-btn" onclick="toggleBookmark('home')">
+            <i class="ri-bookmark-line"></i>
+          </button>
+        </div>
+        <div class="news-grid__container">
+          <!-- Article 1 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img
+                src="Images/AI Healthcare Breakthrough.webp"
+                alt="AI Healthcare Breakthrough"
+              />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                AI-Powered Healthcare System Reduces Hospital Wait Times by 70%
+              </h3>
+              <p class="article__excerpt">
+                A revolutionary AI system implemented across UK hospitals has
+                dramatically improved patient care efficiency, with wait times
+                reduced by 70% and diagnostic accuracy increased by 40%.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 1 hour ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Climate Agreement.webp" alt="Climate Agreement" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Global Carbon Trading System Launches Successfully
+              </h3>
+              <p class="article__excerpt">
+                After years of negotiations, world leaders have established a
+                unified global carbon trading system, marking a historic step in
+                the fight against climate change.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">5 min read</span>
+                <span class="article__date">Updated 2 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Space Tourism.webp" alt="Space Tourism" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                First Commercial Space Hotel Opens for Bookings
+              </h3>
+              <p class="article__excerpt">
+                The world's first space hotel, Orbital Haven, has begun
+                accepting reservations for 2026, offering luxury accommodations
+                in low Earth orbit with stunning views of our planet.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">3 min read</span>
+                <span class="article__date">Updated 3 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Quantum Computing.webp" type="image/webp">
+                <img src="Images/Quantum Computing.webp" alt="Quantum Computing" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                UK Launches World's First Quantum Computing Network
+              </h3>
+              <p class="article__excerpt">
+                The UK has unveiled a nationwide quantum computing network,
+                connecting research institutions and businesses to accelerate
+                breakthroughs in medicine, climate science, and AI.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 30 minutes ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="india" class="news-section">
+        <div class="section-header">
+          <h2 class="section-title">India News</h2>
+          <button class="bookmark-btn" onclick="toggleBookmark('india')">
+            <i class="ri-bookmark-line"></i>
+          </button>
+        </div>
+        <div class="news-grid__container">
+          <!-- Article 1 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Renewable Energy.webp" type="image/webp">
+                <img src="Images/Renewable Energy.webp" alt="Renewable Energy" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                India Achieves 50% Renewable Energy Target Ahead of Schedule
+              </h3>
+              <p class="article__excerpt">
+                India has surpassed its renewable energy goals two years early,
+                with 500 GW of clean energy capacity now operational, creating
+                over 1 million green jobs.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 1 hour ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Space Mission.webp" alt="Space Mission" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                ISRO's Gaganyaan Mission Successfully Completes First Manned
+                Flight
+              </h3>
+              <p class="article__excerpt">
+                India's first manned space mission has returned safely to Earth,
+                marking a historic achievement in the country's space
+                exploration program.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">5 min read</span>
+                <span class="article__date">Updated 2 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Digital Currency.webp" alt="Digital Currency" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Digital Rupee Adoption Reaches 50% of Population
+              </h3>
+              <p class="article__excerpt">
+                India's central bank digital currency has achieved widespread
+                adoption, with over 700 million users now using the Digital
+                Rupee for daily transactions.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">3 min read</span>
+                <span class="article__date">Updated 3 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/High-Speed Rail.webp" type="image/webp">
+                <img src="Images/High-Speed Rail.webp" alt="High-Speed Rail" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Mumbai-Delhi Bullet Train Completes First Commercial Run
+              </h3>
+              <p class="article__excerpt">
+                The much-anticipated high-speed rail link between India's two
+                largest cities has begun operations, reducing travel time to
+                just 4 hours.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 30 minutes ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="world" class="news-section">
+        <div class="section-header">
+          <h2 class="section-title">World News</h2>
+          <button class="bookmark-btn" onclick="toggleBookmark('world')">
+            <i class="ri-bookmark-line"></i>
+          </button>
+        </div>
+        <div class="news-grid__container">
+          <!-- Article 1 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Climate Summit.webp" type="image/webp">
+                <img src="Images/Climate Summit.webp" alt="Climate Summit" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Historic Global Agreement Reached on Carbon Trading System
+              </h3>
+              <p class="article__excerpt">
+                World leaders have signed a groundbreaking agreement
+                establishing a unified global carbon trading system, with 95% of
+                nations committing to net-zero emissions by 2040.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">5 min read</span>
+                <span class="article__date">Updated 1 hour ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Mars Mission.webp" alt="Mars Mission" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                First Human Mission to Mars Successfully Lands
+              </h3>
+              <p class="article__excerpt">
+                The international Mars mission has achieved a historic landing,
+                with astronauts beginning their 18-month research mission on the
+                Red Planet.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 2 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/AI Regulation.webp" alt="AI Regulation" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                UN Adopts First Global AI Governance Framework
+              </h3>
+              <p class="article__excerpt">
+                The United Nations has approved a comprehensive framework for
+                artificial intelligence governance, setting global standards for
+                ethical AI development and deployment.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">3 min read</span>
+                <span class="article__date">Updated 3 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Ocean Cleanup.webp" type="image/webp">
+                <img src="Images/Ocean Cleanup.webp" alt="Ocean Cleanup" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Great Pacific Garbage Patch Reduced by 50%
+              </h3>
+              <p class="article__excerpt">
+                International cleanup efforts have successfully removed half of
+                the plastic waste from the Great Pacific Garbage Patch, marking
+                a major milestone in ocean conservation.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 30 minutes ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="business" class="news-section">
+        <h2 class="section-title">Business</h2>
+        <div class="news-grid__container">
+          <!-- Article 1 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img
+                src="Images/Electric Vehicles.webp"
+                alt="Electric Vehicles"
+              />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Electric Vehicle Sales Surpass Traditional Cars for First Time
+              </h3>
+              <p class="article__excerpt">
+                Global electric vehicle sales have exceeded traditional car
+                sales for the first time, with 52% of new vehicles sold being
+                fully electric or hybrid.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 1 hour ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img
+                src="Images/Crypto Regulation.webp"
+                alt="Crypto Regulation"
+              />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Major Banks Launch Global Digital Currency Exchange
+              </h3>
+              <p class="article__excerpt">
+                A consortium of leading banks has launched the first regulated
+                global digital currency exchange, revolutionizing cross-border
+                payments and financial transactions.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">5 min read</span>
+                <span class="article__date">Updated 2 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Remote Work.webp" alt="Remote Work" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Global Remote Work Economy Reaches $5 Trillion
+              </h3>
+              <p class="article__excerpt">
+                The remote work economy has grown to $5 trillion, with 65% of
+                companies now operating fully or partially remote, transforming
+                traditional business models.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">3 min read</span>
+                <span class="article__date">Updated 3 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img
+                src="Images/Sustainable Business.webp"
+                alt="Sustainable Business"
+              />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Major Corporations Achieve Net-Zero Operations
+              </h3>
+              <p class="article__excerpt">
+                Over 100 Fortune 500 companies have achieved net-zero carbon
+                emissions in their operations, setting new standards for
+                sustainable business practices.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 30 minutes ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="politics" class="news-section">
+        <h2 class="section-title">Politics</h2>
+        <div class="news-grid__container">
+          <!-- Article 1 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Climate Policy.webp" type="image/webp">
+                <img src="Images/Climate Policy.webp" alt="Climate Policy" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Global Climate Treaty Ratified by 200 Nations
+              </h3>
+              <p class="article__excerpt">
+                A landmark climate treaty has been ratified by 200 nations,
+                establishing binding commitments to reduce greenhouse gas
+                emissions and transition to renewable energy.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">5 min read</span>
+                <span class="article__date">Updated 1 hour ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img
+                src="Images/Digital Governance.webp"
+                alt="Digital Governance"
+              />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                First AI-Powered Digital Government Launches in Estonia
+              </h3>
+              <p class="article__excerpt">
+                Estonia has become the first country to implement a fully
+                AI-powered digital government system, streamlining public
+                services and reducing bureaucratic processes.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 2 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Space Mission.webp" alt="Space Policy" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                UN Establishes First Space Traffic Management System
+              </h3>
+              <p class="article__excerpt">
+                The United Nations has implemented a global space traffic
+                management system to regulate the increasing number of
+                satellites and space activities.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">3 min read</span>
+                <span class="article__date">Updated 3 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Digital Governance.webp" type="image/webp">
+                <img src="Images/Digital Governance.webp" alt="Digital Rights" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Global Digital Rights Charter Adopted by 150 Nations
+              </h3>
+              <p class="article__excerpt">
+                A comprehensive digital rights charter has been adopted by 150
+                nations, establishing universal standards for online privacy,
+                data protection, and digital freedoms.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 30 minutes ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="tech" class="news-section">
+        <h2 class="section-title">Technology</h2>
+        <div class="news-grid__container">
+          <!-- Article 1 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Quantum Computing.webp" type="image/webp">
+                <img src="Images/Quantum Computing.webp" alt="Quantum Computing" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                First Commercial Quantum Computer Achieves 1000 Qubits
+              </h3>
+              <p class="article__excerpt">
+                A major breakthrough in quantum computing has been achieved,
+                with the first commercial system reaching 1000 qubits, opening
+                new possibilities for scientific research and cryptography.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">5 min read</span>
+                <span class="article__date">Updated 1 hour ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img
+                src="Images/AI Healthcare Breakthrough.webp"
+                alt="AI Healthcare"
+              />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                AI System Successfully Diagnoses Rare Diseases
+              </h3>
+              <p class="article__excerpt">
+                A new AI system has demonstrated 98% accuracy in diagnosing rare
+                diseases, significantly reducing the time needed for accurate
+                medical diagnosis.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 2 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/6G Network.webp" alt="6G Network" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                First 6G Network Trial Achieves 1 Terabit per Second
+              </h3>
+              <p class="article__excerpt">
+                The first 6G network trial has achieved unprecedented speeds of
+                1 terabit per second, paving the way for revolutionary
+                applications in augmented reality and IoT.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">3 min read</span>
+                <span class="article__date">Updated 3 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img
+                src="Images/Brain-Computer Interface.webp"
+                alt="Brain-Computer Interface"
+              />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                First Consumer Brain-Computer Interface Released
+              </h3>
+              <p class="article__excerpt">
+                A major tech company has released the first consumer-grade
+                brain-computer interface, allowing users to control devices with
+                their thoughts.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 30 minutes ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="foryou" class="news-section">
+        <h2 class="section-title">For You</h2>
+
+        <!-- Personalized Articles Section -->
+        <div class="section-subtitle">
+          <h3>Articles Based on Your Preferences</h3>
+          <p class="section-description">
+            Content tailored to your interests and reading history
+          </p>
+        </div>
+        <div class="news-grid__container">
+          <!-- Article 1 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img
+                src="Images/Electric Vehicles.webp"
+                alt="Personalized AI News"
+              />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Your Weekly AI Digest: Latest Breakthroughs and Applications
+              </h3>
+              <p class="article__excerpt">
+                A curated collection of AI developments tailored to your
+                interests, including healthcare innovations, ethical
+                considerations, and practical applications.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">5 min read</span>
+                <span class="article__date">Updated 1 hour ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Quantum Computing.webp" alt="Tech Innovations" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Emerging Technologies You Should Know About
+              </h3>
+              <p class="article__excerpt">
+                Based on your reading history, here are the most relevant tech
+                innovations that could impact your industry and daily life.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 2 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/High-Speed Rail.webp" alt="Business Trends" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Market Trends and Analysis for Your Industry
+              </h3>
+              <p class="article__excerpt">
+                Personalized market insights and business trends relevant to
+                your professional interests and career development.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">6 min read</span>
+                <span class="article__date">Updated 3 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Space Mission.webp" type="image/webp">
+                <img src="Images/Space Mission.webp" alt="Science Updates" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Science News Aligned with Your Interests
+              </h3>
+              <p class="article__excerpt">
+                Discover the latest scientific breakthroughs and research
+                developments in fields you follow most closely.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 30 minutes ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Local News Section -->
+        <div class="section-subtitle">
+          <h3>Local News</h3>
+          <p class="section-description">
+            Stay updated with news from your area
+          </p>
+        </div>
+        <div class="news-grid__container">
+          <!-- Article 1 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Development.webp" type="image/webp">
+                <img src="Images/Development.webp" alt="Local Development" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                New Smart City Initiative Launches in Your Area
+              </h3>
+              <p class="article__excerpt">
+                Local authorities have announced a comprehensive smart city
+                project, including improved public transport, renewable energy
+                integration, and digital services.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">3 min read</span>
+                <span class="article__date">Updated 1 hour ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Ocean Cleanup.webp" alt="Community Event" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Annual Tech Festival Returns to Your City
+              </h3>
+              <p class="article__excerpt">
+                The city's largest tech festival is back with new features,
+                including AI workshops, startup showcases, and networking
+                opportunities for local professionals.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">2 min read</span>
+                <span class="article__date">Updated 2 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="news-article">
+            <div class="article__image">
+              <img src="Images/Sustainable Business.webp" alt="Local Business" />
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                Local Startup Secures Major Investment
+              </h3>
+              <p class="article__excerpt">
+                A homegrown tech startup has received significant funding to
+                expand its operations, creating new job opportunities in the
+                area.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">3 min read</span>
+                <span class="article__date">Updated 3 hours ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="news-article">
+            <div class="article__image">
+              <picture>
+                <source srcset="Images/Electric Vehicles.webp" type="image/webp">
+                <img src="Images/Electric Vehicles.webp" alt="Education News" loading="lazy">
+              </picture>
+            </div>
+            <div class="article__content">
+              <h3 class="article__title">
+                New STEM Education Center Opens in Your District
+              </h3>
+              <p class="article__excerpt">
+                A state-of-the-art STEM education center has opened its doors,
+                offering advanced learning opportunities for students and
+                professionals in the area.
+              </p>
+              <div class="article__meta">
+                <span class="article__time">4 min read</span>
+                <span class="article__date">Updated 30 minutes ago</span>
+              </div>
+              <div class="article__actions">
+                <button class="bookmark-btn" aria-label="Bookmark">
+                  <i class="ri-bookmark-line"></i>
+                </button>
+                <button class="speech-btn" aria-label="Text to speech">
+                  <i class="ri-volume-up-line"></i>
+                </button>
+                <button class="share-btn" aria-label="Share">
+                  <i class="ri-share-line"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__content">
+          <div class="footer__sections">
+            <!-- BBC News Sections -->
+            <div class="footer__section">
+              <h3 class="footer__title">BBC News</h3>
+              <ul class="footer__list">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">India</a></li>
+                <li><a href="#">World</a></li>
+                <li><a href="#">Business</a></li>
+                <li><a href="#">Politics</a></li>
+                <li><a href="#">Tech</a></li>
+                <li><a href="#">Science</a></li>
+                <li><a href="#">Health</a></li>
+                <li><a href="#">Education</a></li>
+                <li><a href="#">Entertainment & Arts</a></li>
+              </ul>
+            </div>
+
+            <!-- BBC Services -->
+            <div class="footer__section">
+              <h3 class="footer__title">BBC Services</h3>
+              <ul class="footer__list">
+                <li><a href="#">BBC Weather</a></li>
+                <li><a href="#">BBC Sport</a></li>
+                <li><a href="#">BBC iPlayer</a></li>
+                <li><a href="#">BBC Sounds</a></li>
+                <li><a href="#">BBC Bitesize</a></li>
+                <li><a href="#">BBC Cymru</a></li>
+                <li><a href="#">BBC Alba</a></li>
+                <li><a href="#">BBC Scotland</a></li>
+              </ul>
+            </div>
+
+            <!-- More BBC Sites -->
+            <div class="footer__section">
+              <h3 class="footer__title">More BBC Sites</h3>
+              <ul class="footer__list">
+                <li><a href="#">BBC Homepage</a></li>
+                <li><a href="#">News in your local area</a></li>
+                <li><a href="#">BBC News App</a></li>
+                <li><a href="#">BBC News Channel</a></li>
+                <li><a href="#">BBC World News</a></li>
+                <li><a href="#">BBC News Arabic</a></li>
+                <li><a href="#">BBC News Russian</a></li>
+                <li><a href="#">BBC News Chinese</a></li>
+              </ul>
+            </div>
+
+            <!-- About the BBC -->
+            <div class="footer__section">
+              <h3 class="footer__title">About the BBC</h3>
+              <ul class="footer__list">
+                <li><a href="#">About the BBC</a></li>
+                <li><a href="#">BBC Charter</a></li>
+                <li><a href="#">BBC News Press Office</a></li>
+                <li><a href="#">BBC Complaints</a></li>
+                <li><a href="#">Contact the BBC</a></li>
+                <li><a href="#">Get Personalised Newsletters</a></li>
+                <li><a href="#">Why you can trust the BBC</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Footer Bottom -->
+          <div class="footer__bottom">
+            <div class="footer__copyright">
+              <p>
+                &copy; 2024 BBC. The BBC is not responsible for the content of
+                external sites.
+                <a href="#">Read about our approach to external linking.</a>
+              </p>
+            </div>
+            <div class="footer__legal">
+              <ul class="footer__legal-list">
+                <li><a href="#">Terms of Use</a></li>
+                <li><a href="#">About the BBC</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Cookies</a></li>
+                <li><a href="#">Accessibility Help</a></li>
+                <li><a href="#">Parental Guidance</a></li>
+                <li><a href="#">Contact the BBC</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" aria-label="Scroll to top">
+      <i class="ri-arrow-up-line"></i>
+    </button>
+
+    <!-- Theme Configuration -->
+    <script src="js/theme.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../scripts/main.js"></script>
+    <!-- Keyboard Shortcuts -->
+    <script src="js/keyboard-shortcuts.js"></script>
+    <script>
+      // Initialize speech synthesis
+      let isSpeaking = false;
+      let currentUtterance = null;
+
+      function speakArticle(article) {
+        if (!article) return;
+
+        // Get article content
+        const title = article.querySelector('.article__title')?.textContent || '';
+        const excerpt = article.querySelector('.article__excerpt')?.textContent || '';
+        const contentToRead = `${title}. ${excerpt}`;
+
+        // Check if speech is already active
+        if (speechSynthesis.speaking) {
+          speechSynthesis.cancel();
+          isSpeaking = false;
+          currentUtterance = null;
+          document.querySelectorAll('.speech-btn').forEach(btn => {
+            btn.classList.remove('speech-active');
+            btn.querySelector('i').className = 'ri-volume-up-line';
+          });
+          return;
+        }
+
+        // Create and speak utterance
+        currentUtterance = new SpeechSynthesisUtterance(contentToRead);
+        currentUtterance.rate = 1;
+        currentUtterance.pitch = 1;
+
+        // Add event listeners for speech events
+        currentUtterance.onstart = () => {
+          isSpeaking = true;
+          const speechBtn = article.querySelector('.speech-btn');
+          if (speechBtn) {
+            speechBtn.classList.add('speech-active');
+            speechBtn.querySelector('i').className = 'ri-volume-mute-line';
+          }
+        };
+
+        currentUtterance.onend = () => {
+          isSpeaking = false;
+          currentUtterance = null;
+          document.querySelectorAll('.speech-btn').forEach(btn => {
+            btn.classList.remove('speech-active');
+            btn.querySelector('i').className = 'ri-volume-up-line';
+          });
+        };
+
+        // Speak the text
+        speechSynthesis.speak(currentUtterance);
+      }
+
+      // Initialize speech buttons
+      document.addEventListener('DOMContentLoaded', () => {
+        // Handle carousel articles
+        const carouselArticles = document.querySelectorAll('.carousel__slide article');
+        carouselArticles.forEach(article => {
+          const speechBtn = article.querySelector('.speech-btn');
+          if (speechBtn) {
+            speechBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              speakArticle(article);
+            });
+          }
+        });
+
+        // Handle regular articles
+        const regularArticles = document.querySelectorAll('.news-article');
+        regularArticles.forEach(article => {
+          const speechBtn = article.querySelector('.speech-btn');
+          if (speechBtn) {
+            speechBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              speakArticle(article);
+            });
+          }
+        });
+
+        // Add event listener for speech end
+        speechSynthesis.onvoiceschanged = () => {
+          // This ensures the speech synthesis is properly initialized
+          if (!speechSynthesis.getVoices().length) {
+            setTimeout(() => speechSynthesis.onvoiceschanged(), 100);
+          }
+        };
+      });
+    </script>
+    <script>
+      // Theme switching functionality
+      // Initialize theme based on user preference
+      const savedTheme = localStorage.getItem('theme');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const initialTheme = savedTheme || (systemTheme ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', initialTheme);
+      
+      // Apply initial theme styles
+      const root = document.documentElement.style;
+      if (initialTheme === 'dark') {
+        root.setProperty('--text-color', '#fff');
+        root.setProperty('--bg-color', '#1a1a1a');
+        root.setProperty('--header-bg', '#1a1a1a');
+        root.setProperty('--nav-hover', '#2d2d2d');
+        root.setProperty('--border-color', '#333');
+        root.setProperty('--speech-btn-color', '#fff');
+      } else {
+        root.setProperty('--text-color', '#333');
+        root.setProperty('--bg-color', '#fff');
+        root.setProperty('--header-bg', '#fff');
+        root.setProperty('--nav-hover', '#f5f5f5');
+        root.setProperty('--border-color', '#e5e5e5');
+        root.setProperty('--speech-btn-color', '#333');
+      }
+
+      // Add theme switching button
+      const themeBtn = document.createElement('button');
+      themeBtn.className = 'theme-btn';
+      themeBtn.innerHTML = '<i class="ri-sun-line"></i>';
+      themeBtn.addEventListener('click', () => {
+        // Toggle theme preference
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        
+        // Update styles
+        if (newTheme === 'dark') {
+          root.setProperty('--text-color', '#fff');
+          root.setProperty('--bg-color', '#1a1a1a');
+          root.setProperty('--header-bg', '#1a1a1a');
+          root.setProperty('--nav-hover', '#2d2d2d');
+          root.setProperty('--border-color', '#333');
+          root.setProperty('--speech-btn-color', '#fff');
+        } else {
+          root.setProperty('--text-color', '#333');
+          root.setProperty('--bg-color', '#fff');
+          root.setProperty('--header-bg', '#fff');
+          root.setProperty('--nav-hover', '#f5f5f5');
+          root.setProperty('--border-color', '#e5e5e5');
+          root.setProperty('--speech-btn-color', '#333');
+        }
+      });
+      document.querySelector('.header__nav').appendChild(themeBtn);
+
+      // Update theme button icon based on current theme
+      const updateThemeIcon = () => {
+        const icon = themeBtn.querySelector('i');
+        icon.className = document.documentElement.getAttribute('data-theme') === 'dark' 
+          ? 'ri-sun-line' 
+          : 'ri-moon-line';
+      };
+      updateThemeIcon();
+
+      // Add event listener for theme changes
+      document.documentElement.addEventListener('themechange', updateThemeIcon);
+
+      // Add styles for theme button
+      const style = document.createElement('style');
+      style.textContent = `
+        .theme-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0.5rem;
+          color: var(--text-color);
+          border-radius: 4px;
+          transition: all 0.3s ease;
+        }
+        .theme-btn:hover {
+          background-color: var(--nav-hover);
+        }
+      `;
+      document.head.appendChild(style);
+    </script>
+    </body>
+</html>
